@@ -1,19 +1,16 @@
 
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-
+import { Inter } from "next/font/google";
 import { ConvexClientProvider } from "@/components/convex-client-provider";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+// import { Modals } from "@/components/modals";
 
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -26,13 +23,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ConvexClientProvider>{children}</ConvexClientProvider>
-      </body>
-    </html>
+    return (
+    <ConvexAuthNextjsServerProvider>
+      <html lang="en">
+        <body className={inter.className}>
+            <ConvexClientProvider>
+                <Toaster />
+                {/* <Modals /> */}
+                {children}
+            </ConvexClientProvider>
+        </body>
+      </html>
+    </ConvexAuthNextjsServerProvider>
   );
 }
+
